@@ -15,7 +15,7 @@ before_install:
 - xcodebuild -showsdks
 script:
 - set -o pipefail
-- .bump-version.sh
+- ./bump-version.sh
 - carthage build --no-skip-current --platform macOS SwiftSVG
 - carthage archive SwiftSVG
 deploy:
