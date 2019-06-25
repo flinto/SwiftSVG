@@ -1,0 +1,29 @@
+language: objective-c
+osx_image: xcode10.2
+env:
+  global:
+  - LC_CTYPE=en_US.UTF-8
+  - LANG=en_US.UTF-8
+before_install:
+- env
+- locale
+- gem install cocoapods --prerelease --no-document --quiet
+- gem install xcpretty --no-document --quiet
+- pod --version
+- xcpretty --version
+- xcodebuild -version
+- xcodebuild -showsdks
+script:
+- set -o pipefail
+- .bump-version.sh
+- carthage build --no-skip-current --platform macOS SwiftSVG
+- carthage archive SwiftSVG
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: WFQ51SmvsCIYsakZEoVbKE/JlB7HuIO+iSo1qtfIgnDDG7bn/a9qWslcOMcxJKDUv9+gwxqOdhxJKBeVk1GzS9USsUwicHVnnNyoq7gecZuVhtq8mcxVP42iZ5FmNrxMX0Ns7x0qohCgYHXP+ixdW1yYHO6gdx1extMIPudo+/+aB6uN1WxWpYJ1iN0MCHCD7ltNjOhAnkA+QGmUM3wTfiUdz5S9vWO9t0yE7tBSBMnjqw164xdrpHs63XSg2TWBkNmJFentsCnhINycNu8rZbb3NvBi3jSCzl7NO5JU8qB83wnmSZIBN8d0XZXMmXkvX59FK8D5VN107LjCjRBZqCnwSgVgcNTDHKyg2pLMuFzc1dX7v04KmabXZAKSxqXVitpdezXqPUS4maoVLSYvYNbI2f2+J5RVrUsyhR9LkcPlBEHhPRyVkvCXX/DZ7VAxq+yKkhGiLXoNSqu52m4fefUTiwtIvHwikXesI8u6yZCVQVgexBTYQ4s9bQo19pO9glBPgKE2+CbKi4rs+WzB2kzvgPcQbDraPJhTjSQkaYUoBXbApl6rnmQYOQOVy97qkFijlNn5mjtZER0vp/4Fd/97LMmsPb+aRFLfi6lwG/82XpfpEW0YsCBENb//wToQBcZ2b1+YJcZ7WRrQTJ1bVfOu0oUwoglPsuLRuZjkrZ0=
+  file: SwiftSVG.framework.zip
+  on:
+    repo: flinto/SwiftSVG
+    tags: true
