@@ -65,3 +65,11 @@ public extension UIBezierPath {
     }
     
 }
+
+extension CGPath {
+  public static func createFromSVG(_ svgString: String) -> CGPath? {
+    let singlePath = SVGPath(singlePathString: svgString)
+    return singlePath.svgLayer.path
+  }
+
+}
